@@ -1,0 +1,229 @@
+<html lang="en" >
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="sms.css">
+  <!-- Angular Material style sheet -->
+  <link rel="stylesheet" href="bower_components/angular-material/angular-material.min.css">
+  <link rel="stylesheet" href="bower_components/angular-material-icons/angular-material-icons.css">
+<style>
+
+.virtualRepeatdemoDeferredLoading {
+  height: 292px;
+  width: 100%;
+  max-width: 400px;
+  background-color: red;
+}
+.virtualRepeatdemoDeferredLoading .repeated-item {
+  border-bottom: 1px solid #ddd;
+  box-sizing: border-box;
+  height: 40px;
+  padding-top: 10px;
+}
+.virtualRepeatdemoDeferredLoading md-content {
+  margin: 16px;
+}
+.virtualRepeatdemoDeferredLoading md-virtual-repeat-container {
+  border: solid 1px grey;
+}
+.virtualRepeatdemoDeferredLoading .md-virtual-repeat-container .md-virtual-repeat-offsetter div {
+  padding-left: 16px;
+}
+
+.virtualRepeatdemoInfiniteScroll#vertical-container {
+  height: 292px;
+  width: 100%;
+  /*max-width: 400px;*/
+}
+.md-virtual-repeat-offsetter {
+  width:100%;
+  height: 50px;
+}
+.virtualRepeatdemoInfiniteScroll .repeated-item {
+  border-bottom: 1px solid #ddd;
+  box-sizing: border-box;
+  min-height: 40px;
+  padding-top: 10px;
+}
+.virtualRepeatdemoInfiniteScroll md-content {
+  margin: 16px;
+}
+.virtualRepeatdemoInfiniteScroll md-virtual-repeat-container {
+  border: solid 1px grey;
+}
+.virtualRepeatdemoInfiniteScroll .md-virtual-repeat-container .md-virtual-repeat-offsetter div {
+  padding-left: 16px;
+}
+
+</style>
+
+
+</head>
+<body ng-app="SmsContinuumApp" ng-cloak>
+
+  <div layout="column" layout-fill ng-controller="MainController" ng-cloak>
+    <md-content>
+      <md-toolbar>
+        <div class="md-toolbar-tools">
+          <md-button class="md-icon-button" aria-label="main menu" ng-click="openLeftMenu()">
+            <ng-md-icon icon="menu" size="24px"></ng-md-icon>
+          </md-button>
+          <span>Sms continuum</span>
+          <span flex></span>
+
+          <md-button class="md-icon-button" aria-label="main menu" ng-click="composeSms()">
+            <ng-md-icon icon="message" size="24px"></ng-md-icon>
+          </md-button>
+
+        </div>
+      </md-toolbar>
+
+    </md-content>
+
+    <md-content layout="column">
+      <h2>Messages</h2>
+
+      <!--<md-virtual-repeat-container class="virtualRepeatdemoDeferredLoading">
+          <div md-virtual-repeat="item in items" class="repeated-item" flex>
+            {{item}}
+          </div>
+      </md-virtual-repeat-container>-->
+
+
+      <!--<span>size: {{model.infiniteItems}}</span>-->
+
+      <md-virtual-repeat-container id="vertical-container" class="virtualRepeatdemoInfiniteScroll">
+        <div md-virtual-repeat="sms in inbox" md-on-demand class="repeated-item" flex>
+          <p>From: {{sms.address}}</p>
+          <p class="triangle-right left">{{sms.body}}</p>
+        </div>
+      </md-virtual-repeat-container>
+
+       <!--<md-virtual-repeat-container class="virtualRepeatdemoDeferredLoading">
+        <div md-virtual-repeat="i in items">Hello {{i}}!</div>
+      </md-virtual-repeat-container> -->
+
+      <!-- <md-virtual-repeat-container md-orient-horizontal>
+        <div md-virtual-repeat="i in items" md-item-size="20">Hello {{i}}!</div>
+      </md-virtual-repeat-container>
+    </md-content> -->
+
+    <md-sidenav md-component-id="left" class="md-sidenav-left">
+
+      <md-list>
+        <md-list-item>
+          <md-button md-ripple-size="full">
+            <ng-md-icon icon="menu" size="24px"></ng-md-icon>
+            <span>Item content in list</span>
+          </md-button>
+        </md-list-item>
+        <md-list-item>
+          <md-button>
+            <ng-md-icon icon="menu" size="24px"></ng-md-icon>
+            <span>Item content in list</span>
+          </md-button>
+        </md-list-item>
+      </md-list>
+
+    </md-sidenav>
+  </div>
+
+  <!-- Angular Material requires Angular.js Libraries -->
+  <script src="bower_components/angular/angular.min.js"></script>
+  <script src="bower_components/angular-animate/angular-animate.min.js"></script>
+  <script src="bower_components/angular-aria/angular-aria.min.js"></script>
+  <script src="bower_components/angular-messages/angular-messages.min.js"></script>
+
+  <!-- Angular Material Library -->
+  <script src="bower_components/angular-material/angular-material.min.js"></script>
+  <script src="bower_components/angular-material-icons/angular-material-icons.min.js"></script>
+
+  <!-- Your application bootstrap  -->
+  <script type="text/javascript">
+
+(function () {
+    'use strict';
+
+    //var endpoint = "http://192.168.0.139:8083";
+    var endpoint = "http://192.168.1.81:8083";
+
+    var app = angular.module('SmsContinuumApp', ['ngMaterial', 'ngMdIcons']);
+    app.controller('MainController', function($scope, $mdSidenav, $timeout, $http) {
+
+      $scope.openLeftMenu = function() {
+        $mdSidenav('left').toggle();
+      };
+      $scope.composeSms = function () {
+        alert('new SMS');
+      };
+
+      $scope.items = [0,1,5];
+      for (var i = 0; i < 1000; i++) {
+        $scope.items.push(i);
+      }
+
+      $scope.inbox = {
+        loaded: [],
+        max: 40,
+        waiting:false,
+        getLength: function() {
+          return this.max;// this.loaded.length;
+        },
+        fetchMoreItems: function(index) {
+          this.waiting = true;
+          var self = this;
+          $http.get(endpoint + "/sms/inbox/" + index + "/5").then(function(response) {
+              var models = response.data;
+              for (var i = 0; i < models.length; i++) {
+                self.loaded.push(models[i]);
+              }
+              self.max = models.length > 0 ? self.loaded.length+1 : self.loaded.length;
+              self.waiting = false;
+          });
+        },
+        getItemAtIndex: function(index) {
+          if (index > this.loaded.length - 1) {
+            if (index < this.max && !this.waiting)
+              this.fetchMoreItems(index);
+            return null;
+          }
+          return this.loaded[index];
+        }
+      };
+
+      $scope.infiniteItems = {
+                numLoaded_: 0,
+                toLoad_: 0,
+                // Required.
+                getItemAtIndex: function(index) {
+                  if (index > this.numLoaded_) {
+                    this.fetchMoreItems_(index);
+                    return null;
+                  }
+                  return index;
+                },
+                // Required.
+                // For infinite scroll behavior, we always return a slightly higher
+                // number than the previously loaded items.
+                getLength: function() {
+                  return this.numLoaded_ + 5;
+                },
+                fetchMoreItems_: function(index) {
+                  // For demo purposes, we simulate loading more items with a timed
+                  // promise. In real code, this function would likely contain an
+                  // $http request.
+                  if (this.toLoad_ < index) {
+                    this.toLoad_ += 20;
+                    $timeout(angular.noop, 300).then(angular.bind(this, function() {
+                      this.numLoaded_ = this.toLoad_;
+                    }));
+                  }
+                }
+              };
+    });
+})();
+  </script>
+<!--
+  https://klarsys.github.io/angular-material-icons/#
+-->
+</body>
+</html>
