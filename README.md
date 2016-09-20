@@ -6,6 +6,7 @@ I use it to transform my old Android smartphones to SMS API endpoints for domoti
 
 ## Getting started
 
+- Download and install the APK from https://github.com/rflechner/SmsServer/releases 
 - You can connect your phone to your private WIFI network
 - Run the app
 - Tap on "Start server" button
