@@ -9,7 +9,6 @@ module Operators =
 
 type IAppInteractions =
   abstract member OnStartServerClick : Button -> ProgressBar -> UInt16 -> unit
-  abstract member TestSerialPort : unit -> unit
 
 open Operators
 
@@ -22,7 +21,6 @@ type App(interaction:#IAppInteractions) =
 
   let startServer = Button(Text = "Start server")
   let progressBar = ProgressBar()
-  let serialButton = Button(Text = "Test serial port")
 
   let swaggerButton = Button(Text = "Open Swagger documentation")
 
@@ -47,9 +45,6 @@ type App(interaction:#IAppInteractions) =
       ==> fun _ ->
             Device.OpenUri(Uri <| sprintf "http://localhost:%d/swagger-ui/index.html" (getPort()))
 
-    serialButton.Clicked
-      ==> fun _ -> interaction.TestSerialPort()
-
     progressBar.IsVisible <- false
 
     stack.Children.Add label1
@@ -60,8 +55,6 @@ type App(interaction:#IAppInteractions) =
     stack.Children.Add progressBar
 
     stack.Children.Add swaggerButton
-
-    stack.Children.Add serialButton
 
     base.MainPage <- ContentPage(Content = stack)
 

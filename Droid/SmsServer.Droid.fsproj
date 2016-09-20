@@ -117,6 +117,10 @@
     <AndroidResource Include="Resources\drawable-hdpi\icon.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\icon.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\icon.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\email_server.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\email_server.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\email_server.png" />
+    <AndroidResource Include="Resources\drawable\email_server.png" />
   </ItemGroup>
   <ItemGroup>
     <XamarinComponentReference Include="suave">

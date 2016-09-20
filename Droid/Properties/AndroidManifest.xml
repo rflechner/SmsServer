@@ -11,7 +11,7 @@
 	<uses-permission android:name="android.permission.RECEIVE_MMS" />
 	<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 	<uses-permission android:name="android.permission.READ_CONTACTS" />
-	<application android:label="SmsServer"></application>
+	<application android:label="SmsServer" android:icon="@drawable/email_server"></application>
 	<!--<receiver android:name=".MySMSReceiver "> 
     <intent-filter> 
             <action android:name="android.provider.Telephony.SMS_RECEIVED" /> 

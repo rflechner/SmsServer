@@ -107,26 +107,6 @@ type MainActivity() =
     member val sTask:CancellationTokenSource option = None with get, set
 
     interface SmsServer.IAppInteractions with
-      member __.TestSerialPort () =
-        (*
-        String YOUR_DEVICE_NAME;
-		byte[] DATA;
-		int TIMEOUT;
-
-		USBManager manager = getApplicationContext().getSystemService(Context.USB_SERVICE);
-		Map<String, USBDevice> devices = manager.getDeviceList();
-		USBDevice mDevice = devices.get(YOUR_DEVICE_NAME);
-		USBDeviceConnection connection = manager.openDevice(mDevice);
-		USBEndpoint endpoint = device.getInterface(0).getEndpoint(0);
-
-		connection.claimInterface(device.getInterface(0), true);
-		connection.bulkTransfer(endpoint, DATA, DATA.length, TIMEOUT);
-        *)
-        //let manager = __.BaseContext.GetSystemService(Context.UsbService) :?> UsbManager
-        //Diagnostics.Debug.WriteLine "listing devices"
-        //for k in manager.DeviceList.Keys do
-        //    Diagnostics.Debug.WriteLine (sprintf "usb device: %A" k)
-        ()
       member __.OnStartServerClick button progressBar port =
         match __.sTask with
         | Some t ->
