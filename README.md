@@ -1,6 +1,6 @@
 # SmsServer
 
-This is small Xamarin App on Android running SMS Server in FSharp with Suave
+There is small Xamarin App on Android hosting SMS Server written in FSharp and using the Suave library.
 
 I use it to transform my old Android smartphones to SMS API endpoints for domotic and robotic personal projects.
 
