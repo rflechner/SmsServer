@@ -6,3 +6,4 @@ packages/*
 */bin/*
 Components/
 *.userprefs
+*.apk
